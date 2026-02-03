@@ -16,8 +16,13 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
     loadingDiv.classList.remove('hidden');
     transcriptContainer.innerHTML = '';
 
+    // Auto-detect API URL (localhost for development, deployed URL for production)
+    const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:'
+        ? 'http://localhost:8000'
+        : ''; // Same origin for deployed version
+
     try {
-        const response = await fetch('http://localhost:8000/transcript', {
+        const response = await fetch(`${API_URL}/transcript`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

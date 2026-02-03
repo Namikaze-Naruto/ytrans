@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 from backend.transcript_service import get_transcript
@@ -17,6 +19,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Mount static files (frontend)
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
 
 class TranscriptRequest(BaseModel):
     url: str
@@ -31,6 +36,11 @@ class TranscriptResponse(BaseModel):
     videos: List[VideoTranscript]
     is_playlist: bool
     playlist_title: Optional[str] = None
+
+@app.get("/")
+async def read_root():
+    """Serve the frontend"""
+    return FileResponse('frontend/index.html')
 
 @app.post("/transcript")
 async def generate_transcript(request: TranscriptRequest):

@@ -1,5 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
 youtube-transcript-api
 yt-dlp
 openai-whisper

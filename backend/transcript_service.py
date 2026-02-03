@@ -15,7 +15,8 @@ def load_model():
     global model
     if model is None:
         print("Loading Whisper model...")
-        model = whisper.load_model("base") # using base for speed/accuracy balance
+        # Use tiny model for lower memory usage on free tier hosting
+        model = whisper.load_model("tiny") # tiny model uses less RAM (~1GB vs 2GB)
         print("Whisper model loaded.")
     return model
 
